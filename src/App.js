@@ -1,24 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+
+import { useState, useEffect } from "react";
+import "./App.css";
+import AddCustomers from "./components/AddCustomers";
+import CustomersTable from "./components/CustomersTable";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 function App() {
+  const [tableData, setTableData] = useState([])
+
+    const handleFormData = (formData) =>{
+      // console.log(formData)
+       setTableData(prev => [...prev, formData]);
+    }
+
+  useEffect(()=>{
+    console.log("update", tableData)
+  }, [tableData])
+
+ 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+    <>
+      <Router>
+        <Routes>
+          <Route path="/" element={<CustomersTable tableData={tableData}/>} />
+          <Route path="/AddCustomers" element={<AddCustomers handleForm={handleFormData} />} />
+          <Route path="/CustomersTable" element={<CustomersTable tableData={tableData} setTableData={setTableData}/>} />
+        </Routes>
+      </Router>
+    </>
   );
 }
 
