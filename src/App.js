@@ -9,8 +9,8 @@ function App() {
   const [tableData, setTableData] = useState([])
 
     const handleFormData = (formData) =>{
-      // console.log(formData)
-       setTableData(prev => [...prev, formData]);
+      console.log(formData)
+      setTableData(prev => [...prev, formData]);
     }
 
   useEffect(()=>{
@@ -23,8 +23,8 @@ function App() {
     <>
       <Router>
         <Routes>
+          <Route path="/" element={<CustomersTable tableData={tableData} setTableData={setTableData}/>} />
           <Route path="/AddCustomers" element={<AddCustomers handleForm={handleFormData} />} />
-          <Route path="/CustomersTable" element={<CustomersTable tableData={tableData} setTableData={setTableData}/>} />
         </Routes>
       </Router>
     </>

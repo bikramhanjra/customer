@@ -4,11 +4,19 @@ import { Link } from "react-router-dom";
 export default function CustomersTable({ tableData, setTableData }) {
   const [filterStatus, setFilterStatus] = useState("");
   const [sortTableData, setSortTableData] = useState([]);
+  // const [showbtn, setShowbtn] = useState("false")
 
-  const deleteTable = (deleteTable) => {
-    const newTable = tableData.filter((_, index) => index !== deleteTable);
+  const selectBtn = (deleteData) =>{
+    
+  }
+
+  const deleteBtn = (deleteBtn) =>{
+    console.log("delet btn")
+    const newTable = tableData.filter((_, index) => index !== deleteBtn);
     setTableData(newTable);
-  };
+  }
+
+  
 
   const sortingData = () => {
     return tableData
@@ -63,7 +71,7 @@ export default function CustomersTable({ tableData, setTableData }) {
                     {" "}
                     <input
                       type="checkbox"
-                      onChange={() => deleteTable(index)}
+                      onClick={() => selectBtn(index)}
                     />
                   </td>
                   <td>{customer.firstName}</td>
@@ -76,6 +84,7 @@ export default function CustomersTable({ tableData, setTableData }) {
               ))}
             </tbody>
           </table>
+          <button type="button" onClick={deleteBtn} class="btn btn-danger">Delete</button>
         </div>
       </div>
     </>

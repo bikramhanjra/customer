@@ -13,7 +13,7 @@ export default function AddCustomers({handleForm}) {
     
   const onSubmit = (data) => {
     handleForm(data)
-    navigate("/CustomersTable")
+    navigate("/")
   };
   return (
     <>
