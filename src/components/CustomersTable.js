@@ -1,12 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function CustomersTable({ tableData, setTableData }) {
   const [filterStatus, setFilterStatus] = useState("");
+  const [sortTableData, setSortTableData] = useState([]);
+
   const deleteTable = (deleteTable) => {
     const newTable = tableData.filter((_, index) => index !== deleteTable);
     setTableData(newTable);
   };
+
+  const sortingData = () => {
+    return tableData
+      .filter((customer) => filterStatus === "" || customer.status === filterStatus).sort((a, b) =>a.lastName.toLowerCase().localeCompare(b.lastName.toLowerCase())).reverse();
+  };
+
+  useEffect(() => {
+    setSortTableData(sortingData());
+  }, [tableData, filterStatus]);
+
   return (
     <>
       <div
@@ -35,7 +47,7 @@ export default function CustomersTable({ tableData, setTableData }) {
                   <select
                     id="status"
                     value={filterStatus}
-                    onChange={(e)=> setFilterStatus(e.target.value)}
+                    onChange={(e) => setFilterStatus(e.target.value)}
                   >
                     <option value="">All</option>
                     <option value="active">Active</option>
@@ -45,9 +57,15 @@ export default function CustomersTable({ tableData, setTableData }) {
               </tr>
             </thead>
             <tbody>
-              {tableData.filter((customer) => filterStatus === "" || customer.status === filterStatus).sort((a,b)=>a.lastName.toLowerCase().localeCompare(b.lastName.toLowerCase())).reverse().map((customer, index) => (
+              {sortTableData.map((customer, index) => (
                 <tr key={index}>
-                  <td> <input type="checkbox" onChange={() => deleteTable(index)} /></td>
+                  <td>
+                    {" "}
+                    <input
+                      type="checkbox"
+                      onChange={() => deleteTable(index)}
+                    />
+                  </td>
                   <td>{customer.firstName}</td>
                   <td>{customer.lastName}</td>
                   <td>{customer.email}</td>

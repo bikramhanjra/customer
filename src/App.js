@@ -23,7 +23,6 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<CustomersTable tableData={tableData}/>} />
           <Route path="/AddCustomers" element={<AddCustomers handleForm={handleFormData} />} />
           <Route path="/CustomersTable" element={<CustomersTable tableData={tableData} setTableData={setTableData}/>} />
         </Routes>

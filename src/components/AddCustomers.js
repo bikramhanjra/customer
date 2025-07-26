@@ -10,7 +10,7 @@ export default function AddCustomers({handleForm}) {
   } = useForm();
 
   let navigate = useNavigate()
-  
+    
   const onSubmit = (data) => {
     handleForm(data)
     navigate("/CustomersTable")
