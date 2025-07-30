@@ -1,20 +1,28 @@
 import { useNavigate } from "react-router-dom";
 import { useForm,} from "react-hook-form";
+import { setTableData } from "../redux/customer.slice";
+import { useDispatch, useSelector } from "react-redux";
 
-export default function AddCustomers({handleForm}) {
+export default function AddCustomers({}) {
 
-  const {
+  const { 
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  let navigate = useNavigate()
-    
+  let navigate = useNavigate();
+    const dispatch = useDispatch()
+
+  const tableData = useSelector((state)=> state.customer.tableData )
+
   const onSubmit = (data) => {
-    handleForm(data)
+    console.log("on Submit Data",data)
+     const payload = [...tableData, {...data, id: tableData.length + 1}];
+      dispatch(setTableData(payload));
     navigate("/")
   };
+
   return (
     <>
       <form action="" onSubmit={handleSubmit(onSubmit)}>

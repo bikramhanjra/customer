@@ -4,18 +4,12 @@ import "./App.css";
 import AddCustomers from "./components/AddCustomers";
 import CustomersTable from "./components/CustomersTable";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-
 function App() {
-  const [tableData, setTableData] = useState([])
 
-    const handleFormData = (formData) =>{
-      console.log(formData)
-      setTableData(prev => [...prev, formData]);
-    }
 
-  useEffect(()=>{
-    console.log("update", tableData)
-  }, [tableData])
+  // useEffect(()=>{
+  //   console.log("update", tableData)
+  // }, [tableData])
 
  
   return (
@@ -23,8 +17,8 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<CustomersTable tableData={tableData} setTableData={setTableData}/>} />
-          <Route path="/AddCustomers" element={<AddCustomers handleForm={handleFormData} />} />
+          <Route path="/" element={<CustomersTable/>} />
+          <Route path="/AddCustomers" element={<AddCustomers />} />
         </Routes>
       </Router>
     </>
@@ -32,3 +26,21 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
+
+
+
+// import React from 'react'
+// import Todo from './Todo'
+
+// export default function App() {
+//   return (
+//     <>
+//       <Todo/>
+//     </>
+//   )
+// }

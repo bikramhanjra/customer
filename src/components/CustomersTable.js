@@ -1,31 +1,56 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Search from "./Search";
+import { useDispatch, useSelector } from "react-redux";
+import { setTableData } from "../redux/customer.slice";
 
-export default function CustomersTable({ tableData, setTableData }) {
+export default function CustomersTable({}) {
+  const tableData = useSelector((state)=> state.customer.tableData)
+  console.log("tableData", tableData)
+  
+  const dispatch = useDispatch()
+
   const [filterStatus, setFilterStatus] = useState("");
   const [sortTableData, setSortTableData] = useState([]);
-  // const [showbtn, setShowbtn] = useState("false")
+  const [idSelect, setIdSelect] = useState([]);
 
-  const selectBtn = (deleteData) =>{
-    
-  }
+  const [search, setSearch] = useState("")
 
-  const deleteBtn = (deleteBtn) =>{
-    console.log("delet btn")
-    const newTable = tableData.filter((_, index) => index !== deleteBtn);
-    setTableData(newTable);
-  }
+  const deleteBtn = () => {
+     const newTable = tableData.filter((customer) => {
+      return !idSelect.includes(customer.id.toString());
+    });
+    dispatch(setTableData(newTable))
+    console.log("new table", newTable);
+  };
 
-  
+
+  const handleSelect = (select) => {
+    if(select.target.checked){
+       setIdSelect((recentID) => {
+      return [...recentID, select.target.id];
+    })
+    }else{
+      setIdSelect((recentID)=>{
+        return [idSelect.filter((item)=> item !== recentID)]
+      })
+    }
+    console.log("selecet id", idSelect);
+  };
 
   const sortingData = () => {
     return tableData
-      .filter((customer) => filterStatus === "" || customer.status === filterStatus).sort((a, b) =>a.lastName.toLowerCase().localeCompare(b.lastName.toLowerCase())).reverse();
+      .filter(
+        (customer) => filterStatus === "" || (customer.status === filterStatus && customer.firstName.toLowerCase().includes(search.toLowerCase()))
+      )
+      .sort((a, b) =>
+        b.lastName.toLowerCase().localeCompare(a.lastName.toLowerCase())
+      )
   };
 
   useEffect(() => {
-    setSortTableData(sortingData());
-  }, [tableData, filterStatus]);
+    setSortTableData(sortingData()); // eslint-disable-next-line 
+  }, [tableData, filterStatus,]);
 
   return (
     <>
@@ -34,6 +59,7 @@ export default function CustomersTable({ tableData, setTableData }) {
         style={{ width: "100vw" }}
       >
         <h2>Customers</h2>
+        <Search setSearch={setSearch}/>
         <Link to="/AddCustomers">
           <button type="button" className="btn btn-dark">
             Add Customer
@@ -46,6 +72,7 @@ export default function CustomersTable({ tableData, setTableData }) {
             <thead>
               <tr style={{ border: "1px solid black" }}>
                 <th>Tool</th>
+                <th>Id</th>
                 <th>Firstname</th>
                 <th>Lastname</th>
                 <th>Email</th>
@@ -70,10 +97,12 @@ export default function CustomersTable({ tableData, setTableData }) {
                   <td>
                     {" "}
                     <input
+                      id={customer.id}
                       type="checkbox"
-                      onClick={() => selectBtn(index)}
+                      onChange={handleSelect}
                     />
                   </td>
+                  <td>{customer.id}</td>
                   <td>{customer.firstName}</td>
                   <td>{customer.lastName}</td>
                   <td>{customer.email}</td>
@@ -84,9 +113,20 @@ export default function CustomersTable({ tableData, setTableData }) {
               ))}
             </tbody>
           </table>
-          <button type="button" onClick={deleteBtn} class="btn btn-danger">Delete</button>
+          <button type="button" onClick={deleteBtn} className="btn btn-danger">
+            Delete
+          </button>
         </div>
       </div>
     </>
   );
 }
+
+// const newFilteredData = [];
+//     const newTable = tableData.map((customer) => {
+//       const result = idSelect.includes(customer.id.toString());
+//       if (!result) {
+//         newFilteredData.push(customer);
+//       }
+//     });
+//     setTableData([newFilteredData])
